@@ -1,10 +1,17 @@
 #lang racket/base
 
-(require racket/cmdline)
-(require xml)
-(require (only-in racket/file
+(require (only-in xml
+                  xexpr?
+                  xexpr->xml
+                  write-xml/content
+                  )
+         (only-in racket/cmdline
+                  command-line
+                  )
+         (only-in racket/file
                   copy-directory/files
-                  delete-directory/files))
+                  delete-directory/files
+                  ))
 
 (provide *name*)
 
@@ -19,64 +26,82 @@
 (define *sitename* "Steven's Site")
 (define *keybase*  "https://keybase.io/sleibrock")
 
+;; Define parameters here
+(define current-file     (make-parameter ""))
+(define current-path     (make-parameter ""))
+(define current-task     (make-parameter ""))
+(define current-template (make-parameter ""))
+(define current-verbosity (make-parameter #t))
 
-(define *verbose* (make-parameter #t))
+
+(define-namespace-anchor a)
 
 
+
+;;
+(define (xexpr->file xexpr-t fname)
+  (define fpath (string->path fname))
+  (unless (xexpr? xexpr-t)
+    (error "xexpr->file: not supplied a Xexpr tree"))
+  (call-with-output-file fpath 
+    #:exists 'replace
+    (λ (output-port)
+      (parameterize ([current-output-port output-port])
+        (display "<!doctype html>")
+        (write-xml/content (xexpr->xml xexpr-t)))))
+  (when (current-verbosity)
+    (displayln "Finished writing file")))
+
+
+;;
 (define (copy-root-directory)
   (define-values (root build)
     (values (string->path root-directory)
             (string->path build-directory)))
   (when (directory-exists? build)
       (delete-directory/files build))
-  (copy-directory/files (string->path root-directory)
-                        (string->path build-directory)))
+  (copy-directory/files root build))
 
 
-
-(define (xexpr->file xexpr-t fname)
-  (define fpath (string->path fname))
-  (unless (xexpr? xexpr-t)
-    (error "xexpr->file: not supplied a Xexpr tree"))
-  (call-with-output-file fpath
-    (λ (output-port)
-      (parameterize ([current-output-port output-port])
-        (write "<!doctype html>")
-        (write-xml/content (xexpr->xml xexpr-t))))
-    #:exists 'replace)
-  (displayln "Finished writing file"))
+;;
+(define (clean-build-directory)
+  (delete-directory/files (string->path build-directory)))
 
 
-(define current-file     (make-parameter ""))
-(define current-path     (make-parameter ""))
-(define current-template (make-parameter ""))
-(define-namespace-anchor a)
-(define cn (namespace-anchor->namespace a))
-(define files (list "index.rkt"))
-
-
-(define task-files (directory-list task-directory))
-
-(define (build-whole-site)
-  (copy-root-directory)
+;;
+(define (run-tasks)
+  (define cn (namespace-anchor->namespace a))
+  (define task-files (directory-list task-directory))
   (for-each
-   (λ (tfpath)
+   (λ (task-file-path)
      (parameterize ([current-namespace cn]
-                    [current-file tfpath]
-                    [current-path tfpath])
-       (displayln (format "Executing ~a" (current-file)))
-       (load (build-path task-directory tfpath))
-     ))
-   files))
+                    [current-file task-file-path]
+                    [current-path task-file-path])
+       (when (current-verbosity)
+         (displayln (format "Executing ~a" (current-file))))
+       (load (build-path task-directory task-file-path))))
+   task-files))
 
+
+;;
+(define (build-whole-site)
+  (when (current-verbosity)
+    (displayln "Building whole website"))
+  (copy-root-directory)
+  (run-tasks))
+
+
+;;
 (define (entry-point)
   (command-line
    #:program "builder"
    #:args (action)
  
    (cond ([string=? action "build"] {build-whole-site})
-         (else (displayln "shrug")))))
-
+         ([string=? action "tasks"] {run-tasks})
+         ([string=? action "clean"] {clean-build-directory})
+         ([string=? action "watch"] {displayln "bigshrug"})
+         (else (displayln (format "error: invalid command '~a" action)))))
 
 (module+ main
   (entry-point))
