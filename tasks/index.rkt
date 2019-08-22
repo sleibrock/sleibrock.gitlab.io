@@ -24,4 +24,4 @@
      (nav
       (p "Steven Leibrock 2019"))))))
 
-    
+(xexpr->file (current-template) "public/index.html") 

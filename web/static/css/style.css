@@ -1,0 +1,56 @@
+
+body {
+    margin: 40px auto;
+    max-width: 650px;
+    line-height: 1.6;
+    font-size: 18px;
+    color: #444;
+    padding: 10px;
+}
+
+h1,h2,h3 {
+    line-height:1.2
+}
+
+
+/* auto resize images - put in new class if needed */
+img {
+    max-width: 100%;
+    max-height: auto;
+}
+
+svg {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+
+/* html special shortcut functions */
+
+
+.code-label {
+    padding: 2px;
+    font-family: Courier;
+    background-color: #ddd;
+    color: #111;
+}
+
+.code-block {
+    padding: 10px;
+    background-color: #ddd;
+    color: #111;
+}
+
+.caption-img-block {
+    margin: 0 auto;
+    background: #f9f9f9;
+    padding: 10px;
+    width: 90%;
+    font-size: 14px;
+    box-shadow: 5px 5px 5px #ddd;
+    text-align: center;
+}
+
+
+/* end style.css */

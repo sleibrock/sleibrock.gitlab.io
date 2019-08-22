@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/sleibrock
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://sleibrock.xyz
+  * I am sleibrock (https://keybase.io/sleibrock) on keybase.
+  * I have a public key ASDsyRYu7p-bShpSBSkYlPhSJZiLG0RSvfD5EoMJv29ncwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01011c817d848575c90ccf24318a1747323d56a0f6ad7c1d6f0ff989eaf08a8ce4c90a",
+      "host": "keybase.io",
+      "kid": "0120ecc9162eee9f9b4a1a5205291894f85225988b1b4452bdf0f9128309bf6f67730a",
+      "uid": "53d0300658d7b5b795a8f925874dd119",
+      "username": "sleibrock"
+    },
+    "merkle_root": {
+      "ctime": 1526412951,
+      "hash": "9913db6225b9df15caf184a2fa2e270e6864679301b8deca81daadcb8f3c41d0a21ad151daf9b398f24076b58e2066316e5e37147c27ad534b7458cd5c9574ff",
+      "hash_meta": "587f941e5bd261f9d8e4804fb7c5d02dfcfdf254eeff0ef8dda3151093749516",
+      "seqno": 2745084
+    },
+    "service": {
+      "entropy": "DWYUxbXJGdx4yysR0sQ3MUEv",
+      "hostname": "sleibrock.xyz",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.47"
+  },
+  "ctime": 1526412988,
+  "expire_in": 504576000,
+  "prev": "f34ee55a354564a59eb799bf8ae2c542739eaaadbeec7d2bc4ba8807531e9c43",
+  "seqno": 28,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg7MkWLu6fm0oaUgUpGJT4UiWYixtEUr3w+RKDCb9vZ3MKp3BheWxvYWTESpcCHMQg807lWjVFZKWet5m/iuLFQnOeqq2+7H0rxLqIB1MenEPEIFontKEP3fCfSYGxs+UWCdgQbd7qJ2t+aqUXNX/vPG89AgHCo3NpZ8RA+2YIkhZ2SxY+i+Nb+msetzTREBIDg6+wmBWzYmgW/vXxFY+4Yh62CHI0yBmcqIIVr1/NHEx5dqy8SEFT45iiCahzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIEcBAwFscLC+n2074oT9Buw0i1rJYXPqUs0f+EBiB2Aco3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/sleibrock
+
+==================================================================
