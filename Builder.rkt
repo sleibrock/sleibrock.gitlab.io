@@ -55,6 +55,8 @@
 
 ;;
 (define (copy-root-directory)
+  (when (current-verbosity)
+    (displayln "Copying root directory to build directory"))
   (define-values (root build)
     (values (string->path root-directory)
             (string->path build-directory)))
@@ -65,7 +67,11 @@
 
 ;;
 (define (clean-build-directory)
-  (delete-directory/files (string->path build-directory)))
+  (when (current-verbosity)
+    (displayln "Deleting build directory"))
+  (define build-dir (string->path build-directory))
+  (when (directory-exists? build-dir)
+    (delete-directory/files (string->path build-directory))))
 
 
 ;;
@@ -73,12 +79,13 @@
   (define cn (namespace-anchor->namespace a))
   (define task-files (directory-list task-directory))
   (for-each
-   (λ (task-file-path)
+   (λ (task-path)
+     (define )
      (parameterize ([current-namespace cn]
-                    [current-file task-file-path]
-                    [current-path task-file-path])
+                    [current-file task-path]
+                    [current-path task-path])
        (when (current-verbosity)
-         (displayln (format "Executing ~a" (current-file))))
+         (displayln (format "Executing '~a'" (current-file))))
        (load (build-path task-directory task-file-path))))
    task-files))
 
@@ -101,7 +108,7 @@
          ([string=? action "tasks"] {run-tasks})
          ([string=? action "clean"] {clean-build-directory})
          ([string=? action "watch"] {displayln "bigshrug"})
-         (else (displayln (format "error: invalid command '~a" action)))))
+         (else (displayln (format "error: invalid command '~a'" action))))))
 
 (module+ main
   (entry-point))
