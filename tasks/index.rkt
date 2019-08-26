@@ -11,13 +11,17 @@
    
    (body
     (article
-     (section
       (h1 "Steven's Site")
+     (section
       (p "Welcome to the personal homepage of Steven Leibrock")
       (p "For the most part there is nothing really stored here... For now.")
       
-      (h2 "Other Details")
-      (p "Honestly it's still a work in progress currently.")))
+      (h2 "Code")
+      (p "Honestly it's still a work in progress currently.")
+
+      (h2 "Computer Builds")
+      (p ,(link-to "Click here" "builds.html") " to see all of my computer builds")
+      ))
 
     (hr)
     (footer

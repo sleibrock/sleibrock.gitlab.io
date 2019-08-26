@@ -11,7 +11,11 @@
          (only-in racket/file
                   copy-directory/files
                   delete-directory/files
-                  ))
+                  )
+
+         ;; custom tooling (only-in not very necessary)
+         "tools/html-shortcuts.rkt"
+         )
 
 (provide *name*)
 
@@ -27,13 +31,16 @@
 (define *keybase*  "https://keybase.io/sleibrock")
 
 ;; Define parameters here
-(define current-file     (make-parameter ""))
-(define current-path     (make-parameter ""))
-(define current-task     (make-parameter ""))
-(define current-template (make-parameter ""))
+(define current-file      (make-parameter ""))
+(define current-path      (make-parameter ""))
+(define current-task      (make-parameter ""))
+(define current-data      (make-parameter ""))
+(define current-template  (make-parameter ""))
 (define current-verbosity (make-parameter #t))
 
 
+;; Our namespace anchor in which definitions get loaded into.
+;; Loading tasks will reference this namespace anchor accordingly
 (define-namespace-anchor a)
 
 
@@ -80,13 +87,14 @@
   (define task-files (directory-list task-directory))
   (for-each
    (λ (task-path)
-     (define )
      (parameterize ([current-namespace cn]
                     [current-file task-path]
                     [current-path task-path])
        (when (current-verbosity)
-         (displayln (format "Executing '~a'" (current-file))))
-       (load (build-path task-directory task-file-path))))
+         (displayln (format "Executing '~a'" (current-file)))
+         ;(displayln (format "Template: ~a" (current-template)))
+         )
+       (load (build-path task-directory task-path))))
    task-files))
 
 
