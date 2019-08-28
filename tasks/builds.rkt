@@ -54,10 +54,18 @@
                          ""
                          ))
 
-      (h2 "4790k x 1070 GTX")
+      (h2 "4790k x GTX 970")
 
-      (h2 "6700k x 970 GTX")
-      
+      (p "I've built this computer several times as the performance was fantastic for the cost at the time of hardware costs. The 4790k Haswell proved to be a real workhorse compared to AMD chipsets at the time, and comes highly recommended from multiple sources as one of the better overclocked Intel processors.")
+
+      (p (i "Note: I measured the thermals and determined that even under load, the stock heatsink/fan proved to be enough."))
+
+      ,(unordered-list '("Intel 4790k Haswell - $300"
+                         "NVIDIA GTX 970 GPU - $400"
+                         ""
+                         ))
+
+      (h2 "6700k x GTX 980 Ti")
 
       ))
       
