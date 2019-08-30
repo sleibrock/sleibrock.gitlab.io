@@ -1,20 +1,10 @@
 (current-template
  `(html
-   (head
-    (title "Steven Leibrock's Website")
-    (link ([rel "stylesheet"] [href "static/css/style.css"]))
-    (meta ([charset "utf-8"]))
-    (meta ([viewport "width=device-width, initial-scale=1.0"]))
-    (meta ([keywords "Steven Leibrock personal website"]))
-    (meta ([author "Steven Leibrock"]))
-    (meta ([description "Steven Leibrock's personal website"])))
+   ,(*header*)
    
    (body
     (div ([id "container"])
-         (div ([id "navbar"])
-              (span ([id "navtitle"]) "Steven's Site")
-              (span ([class "navlink"]) "Test1")
-              (span ([class "navlink"]) "Test2"))
+         ,(*nav*)
 
          (div ([id "content"])
               (article
@@ -30,8 +20,10 @@
                 (h2 "Computer Builds")
                 (p ,(link-to "Click here" "builds.html") " to see all of my computer builds")
                 )))
+
+         ,(*footer*)
+
+         ))))
          
-         (div ([id "footer"])
-              (p "Steven Leibrock 2019"))))))
 
 (xexpr->file (current-template) "public/index.html") 

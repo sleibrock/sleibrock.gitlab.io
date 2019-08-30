@@ -22,6 +22,7 @@
 (define root-directory   "web")
 (define build-directory  "public")
 (define task-directory   "tasks")
+(define templates-directory "templates")
 
 ;; Define some site-wide constant variables
 (define *name*     "Steven")
@@ -44,6 +45,32 @@
 (define-namespace-anchor a)
 
 
+
+
+;; HTML sections to preserve/reuse (for now)
+(define current-title (make-parameter "Steven Leibrock's Website"))
+(define *header*
+  (λ ()
+    `(head
+      (title ,(current-title))
+      (link ([rel "stylesheet"] [href "static/css/style.css"]))
+      (meta ([charset "utf-8"]))
+      (meta ([viewport "width=device-width, initial-scale=1.0"]))
+      (meta ([keywords "Steven Leibrock personal website"]))
+      (meta ([author "Steven Leibrock"]))
+      (meta ([description "Steven Leibrock's Personal Website"])))))
+
+(define *nav*
+  (λ ()
+    `(div ([id "navbar"])
+          (span ([id "navtitle"]) "Steven's Site")
+          (span ([class "navlink"]) ,(link-to "About" "about.html")))))
+
+(define *footer*
+  (λ ()
+    `(div ([id "footer"])
+          (p "Steven Leibrock 2019"))))
+  
 
 ;;
 (define (xexpr->file xexpr-t fname)
