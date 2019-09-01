@@ -19,10 +19,10 @@
 
 (provide *name*)
 
-(define root-directory   "web")
-(define build-directory  "public")
-(define task-directory   "tasks")
-(define templates-directory "templates")
+(define root-directory      (path->complete-path "web"))
+(define build-directory     (path->complete-path "public"))
+(define task-directory      (path->complete-path "tasks"))
+(define templates-directory (path->complete-path "templates"))
 
 ;; Define some site-wide constant variables
 (define *name*     "Steven")
@@ -91,21 +91,17 @@
 (define (copy-root-directory)
   (when (current-verbosity)
     (displayln "Copying root directory to build directory"))
-  (define-values (root build)
-    (values (string->path root-directory)
-            (string->path build-directory)))
-  (when (directory-exists? build)
-      (delete-directory/files build))
-  (copy-directory/files root build))
+  (when (directory-exists? build-directory)
+      (delete-directory/files build-directory))
+  (copy-directory/files root-directory build-directory))
 
 
 ;;
 (define (clean-build-directory)
   (when (current-verbosity)
     (displayln "Deleting build directory"))
-  (define build-dir (string->path build-directory))
-  (when (directory-exists? build-dir)
-    (delete-directory/files (string->path build-directory))))
+  (when (directory-exists? build-directory)
+    (delete-directory/files build-directory)))
 
 
 ;;
