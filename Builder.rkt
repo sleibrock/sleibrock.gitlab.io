@@ -15,6 +15,14 @@
 
          ;; custom tooling (only-in not very necessary)
          "tools/html-shortcuts.rkt"
+
+         (only-in "tools/contracts.rkt"
+                  file-path?
+                  )
+
+         (only-in "tools/filewatch.rkt"
+                  proc-on-file-change
+                  )
          )
 
 (provide *name*)
@@ -105,20 +113,23 @@
 
 
 ;;
-(define (run-tasks)
+(define (run-task task-path)
+  (unless (and (path? task-path) (file-exists? task-path))
+    (error "run-task: given path not a file"))
   (define cn (namespace-anchor->namespace a))
-  (define task-files (directory-list task-directory))
-  (for-each
-   (λ (task-path)
-     (parameterize ([current-namespace cn]
-                    [current-file task-path]
-                    [current-path task-path])
-       (when (current-verbosity)
-         (displayln (format "Executing '~a'" (current-file)))
-         ;(displayln (format "Template: ~a" (current-template)))
-         )
-       (load (build-path task-directory task-path))))
-   task-files))
+  (parameterize ([current-namespace cn]
+                 [current-file task-path]
+                 [current-path task-path])
+    (when (current-verbosity)
+      (displayln (format "Executign '~a'" (current-file))))
+    (load task-path)))
+
+
+;; Apply run-task to all valid task file paths in the /tasks folder
+(define (run-all-tasks)
+    (for-each run-task
+              (filter file-path? 
+                      (directory-list #:build? #t task-directory))))
 
 
 ;;
@@ -126,7 +137,7 @@
   (when (current-verbosity)
     (displayln "Building whole website"))
   (copy-root-directory)
-  (run-tasks))
+  (run-all-tasks))
 
 
 ;;
@@ -136,7 +147,7 @@
    #:args (action)
  
    (cond ([string=? action "build"] {build-whole-site})
-         ([string=? action "tasks"] {run-tasks})
+         ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})
          ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
