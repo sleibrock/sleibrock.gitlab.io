@@ -140,6 +140,13 @@
   (run-all-tasks))
 
 
+;; Activate a file change service
+(define (watch-for-changes)
+  (define watcher-thread (proc-on-file-change run-task))
+  (thread-wait watcher-thread))
+  
+
+
 ;;
 (define (entry-point)
   (command-line
@@ -149,6 +156,7 @@
    (cond ([string=? action "build"] {build-whole-site})
          ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})
+         ([string=? action "watch"] {watch-for-changes})
          ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
 

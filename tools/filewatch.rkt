@@ -10,9 +10,9 @@
 ;; TODO: test and make ready for use
 (define (proc-on-file-change dpath proc)
   (unless (directory-exists? dpath)
-    (error "func-on-file-change: given file not a valid directory path"))
+    (error "proc-on-file-change: given file not a valid directory path"))
   (unless (procedure? proc)
-    (error "func-on-file-change: given proc not a procedure"))
+    (error "proc-on-file-change: given proc not a procedure"))
   (define (evt-threader parent-t fpath)
     (thread
      (λ ()
@@ -39,8 +39,7 @@
    (λ ()
      (define proc-t (proc-threader))
      (define watchers
-       (map
-        (λ (fpath) (evt-threader proc-t fpath))))
+       (map (λ (fpath) (evt-threader proc-t fpath)) files))
 
      ; empty loop (does nothing currently)
      (define (loop)
