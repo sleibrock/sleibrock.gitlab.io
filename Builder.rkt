@@ -121,7 +121,7 @@
                  [current-file task-path]
                  [current-path task-path])
     (when (current-verbosity)
-      (displayln (format "Executign '~a'" (current-file))))
+      (displayln (format "Executing '~a'" (current-file))))
     (load task-path)))
 
 
