@@ -1,29 +1,20 @@
-(current-template
- `(html
-   ,(*header*)
-   
-   (body
-    (div ([id "container"])
-         ,(*nav*)
+(load-template "page.rkt")
 
-         (div ([id "content"])
-              (article
-               (section
-                (p "Welcome to the personal homepage of Steven Leibrock")
-                (p "For the most part there is nothing really stored here... For now.")
-                
-                (h2 "Code")
-                (p "I upload all my code to two sources:")
-                ,(unordered-list `(,(link-to "GitHub" "https://github.com/sleibrock")
-                                   ,(link-to "GitLab" "https://gitlab.com/sleibrock")))
-                
-                (h2 "Computer Builds")
-                (p ,(link-to "Click here" "builds.html") " to see all of my computer builds")
-                )))
+(current-title "Steven's Site")
+(current-description "Steven Leibrock's Personal Website")
+(current-keywords "Steven Leibrock personal website")
 
-         ,(*footer*)
+(current-stylesheets '("static/css/style.css"))
 
-         ))))
-         
+(current-contents
+ `((p "Welcome to the personal homepage of Steven Leibrock")
+   (p "This website itself is still heavily under development as I'm writing my own website publishing system in "
+      ,(link-to "Racket" "https://racket-lang.org/")
+      " so it takes time to create new features.")
 
-(xexpr->file (current-template) "public/index.html") 
+   (h2 "Code")
+   (p "I upload all my code to two webistes:")
+   ,(unordered-list (list (link-to "GitHub" "https://github.com/sleibrock")
+                          (link-to "GitLab" "https://gitlab.com/sleibrock")))))
+
+(render-to "public/index.html") 

@@ -2,6 +2,7 @@
 
 (provide link-to
          anchor
+         css
          unordered-list
          ordered-list
          table-of-contents
@@ -15,6 +16,10 @@
 (define (anchor str anch)
   
   `(a ([href ,anch]) ,str))
+
+
+(define (css fpath)
+  `(link ([rel "stylesheet"] [href ,fpath])))
 
 
 (define (unordered-list lst)

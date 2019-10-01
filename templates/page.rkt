@@ -1,17 +1,26 @@
 (current-template
- (λ (content)
+ (λ ()
    `(html
-     ,(*header*)
+     ,(cons 'head
+            (append
+             (map css (current-stylesheets))
+             `((title              ,(current-title))
+               (meta ([author      ,*fullname*]))
+               (meta ([keywords    ,(current-keywords)]))
+               (meta ([description ,(current-description)]))
+               (meta ([charset     "utf-8"]))
+               (meta ([viewport    "width=device-width, initial-scale=1.0"])))))
      
      (body
       (div ([id "container"])
-           ,(*nav*)
+           (div ([id "navbar"])
+                (span ([id "navtitle"]) "Steven's Site")
+                (span ([class "navlink"])
+                      ,(link-to "About" "about.html")))
            
            (div ([id "content"])
                 (article
-                 (cons 'section ,(content))))
+                 ,(cons 'section (current-contents))))
            
-           ,(*footer*)
-           
-           )))))
- 
+           (div ([id "footer"])
+                (p "Steven Leibrock 2019"))))))) 

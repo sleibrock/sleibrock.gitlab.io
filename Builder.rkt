@@ -4,6 +4,7 @@
                   xexpr?
                   xexpr->xml
                   write-xml/content
+                  validate-xexpr
                   )
          (only-in racket/cmdline
                   command-line
@@ -11,10 +12,13 @@
          (only-in racket/file
                   copy-directory/files
                   delete-directory/files
+                  make-directory*
                   )
 
          ;; custom tooling (only-in not very necessary)
          "tools/html-shortcuts.rkt"
+         ;"tools/config.rkt"
+         "tools/parameters.rkt"
 
          (only-in "tools/contracts.rkt"
                   file-path?
@@ -32,6 +36,7 @@
 (define task-directory      (path->complete-path "tasks"))
 (define templates-directory (path->complete-path "templates"))
 
+
 ;; Define some site-wide constant variables
 (define *name*     "Steven")
 (define *fullname* "Steven Leibrock")
@@ -43,8 +48,6 @@
 (define current-file      (make-parameter ""))
 (define current-path      (make-parameter ""))
 (define current-task      (make-parameter ""))
-(define current-data      (make-parameter ""))
-(define current-template  (make-parameter ""))
 (define current-verbosity (make-parameter #t))
 
 
@@ -52,33 +55,6 @@
 ;; Loading tasks will reference this namespace anchor accordingly
 (define-namespace-anchor a)
 
-
-
-
-;; HTML sections to preserve/reuse (for now)
-(define current-title (make-parameter "Steven Leibrock's Website"))
-(define *header*
-  (λ ()
-    `(head
-      (title ,(current-title))
-      (link ([rel "stylesheet"] [href "static/css/style.css"]))
-      (meta ([charset "utf-8"]))
-      (meta ([viewport "width=device-width, initial-scale=1.0"]))
-      (meta ([keywords "Steven Leibrock personal website"]))
-      (meta ([author "Steven Leibrock"]))
-      (meta ([description "Steven Leibrock's Personal Website"])))))
-
-(define *nav*
-  (λ ()
-    `(div ([id "navbar"])
-          (span ([id "navtitle"]) "Steven's Site")
-          (span ([class "navlink"]) ,(link-to "About" "about.html")))))
-
-(define *footer*
-  (λ ()
-    `(div ([id "footer"])
-          (p "Steven Leibrock 2019"))))
-  
 
 ;;
 (define (xexpr->file xexpr-t fname)
@@ -93,6 +69,25 @@
         (write-xml/content (xexpr->xml xexpr-t)))))
   (when (current-verbosity)
     (displayln "Finished writing file")))
+
+
+(define (render-to fname)
+  (define t1 (current-template))
+  (displayln (format "t1: ~a" t1))
+  (define t2 (t1))
+  (displayln (format "t2: ~a" t2))
+  (displayln (format "Is it a xexpr tree? ~a" (xexpr? t2)))
+  (validate-xexpr t2)
+  (xexpr->file ((current-template)) fname))
+
+
+
+(define (load-template fname)
+  (define fpath (build-path templates-directory fname))
+  (define cn (namespace-anchor->namespace a))
+  (parameterize ([current-namespace cn])
+    (load fpath)))
+  
 
 
 ;;
@@ -127,9 +122,9 @@
 
 ;; Apply run-task to all valid task file paths in the /tasks folder
 (define (run-all-tasks)
-    (for-each run-task
-              (filter file-path? 
-                      (directory-list #:build? #t task-directory))))
+  (for-each run-task
+            (filter file-path? 
+                    (directory-list #:build? #t task-directory))))
 
 
 ;;
