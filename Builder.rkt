@@ -6,6 +6,13 @@
                   write-xml/content
                   validate-xexpr
                   )
+         (only-in racket/contract
+                  ->
+                  any/c
+                  none/c
+                  and/c
+                  define/contract
+                  )
          (only-in racket/cmdline
                   command-line
                   )
@@ -44,7 +51,12 @@
 (define *sitename* "Steven's Site")
 (define *keybase*  "https://keybase.io/sleibrock")
 
-;; Define parameters here
+
+
+;; Publishing parameters (changes links, etc)
+(define production?       (make-parameter #f))
+
+;; Task processing parameters here
 (define current-file      (make-parameter ""))
 (define current-path      (make-parameter ""))
 (define current-task      (make-parameter ""))
@@ -56,8 +68,8 @@
 (define-namespace-anchor a)
 
 
-;;
-(define (xexpr->file xexpr-t fname)
+;; Renders a given xexpr tree to a filename
+(define/contract (xexpr->file xexpr-t fname) (-> xexpr? string? any/c)
   (define fpath (string->path fname))
   (unless (xexpr? xexpr-t)
     (error "xexpr->file: not supplied a Xexpr tree"))
@@ -71,18 +83,12 @@
     (displayln "Finished writing file")))
 
 
-(define (render-to fname)
-  (define t1 (current-template))
-  (displayln (format "t1: ~a" t1))
-  (define t2 (t1))
-  (displayln (format "t2: ~a" t2))
-  (displayln (format "Is it a xexpr tree? ~a" (xexpr? t2)))
-  (validate-xexpr t2)
+(define/contract (render-to fname) (-> string? any/c)
   (xexpr->file ((current-template)) fname))
 
 
 
-(define (load-template fname)
+(define/contract (load-template fname) (-> string? any/c)
   (define fpath (build-path templates-directory fname))
   (define cn (namespace-anchor->namespace a))
   (parameterize ([current-namespace cn])
@@ -91,7 +97,7 @@
 
 
 ;;
-(define (copy-root-directory)
+(define/contract (copy-root-directory) (-> any/c)
   (when (current-verbosity)
     (displayln "Copying root directory to build directory"))
   (when (directory-exists? build-directory)
@@ -100,7 +106,7 @@
 
 
 ;;
-(define (clean-build-directory)
+(define/contract (clean-build-directory) (-> any/c)
   (when (current-verbosity)
     (displayln "Deleting build directory"))
   (when (directory-exists? build-directory)
@@ -108,9 +114,7 @@
 
 
 ;;
-(define (run-task task-path)
-  (unless (and (path? task-path) (file-exists? task-path))
-    (error "run-task: given path not a file"))
+(define (run-task task-path) (-> (and/c file-exists? path?) any/c)
   (define cn (namespace-anchor->namespace a))
   (parameterize ([current-namespace cn]
                  [current-file task-path]
@@ -121,14 +125,15 @@
 
 
 ;; Apply run-task to all valid task file paths in the /tasks folder
-(define (run-all-tasks)
+(define/contract (run-all-tasks)
+  (-> any/c)
   (for-each run-task
             (filter file-path? 
                     (directory-list #:build? #t task-directory))))
 
 
 ;;
-(define (build-whole-site)
+(define/contract (build-whole-site) (-> any/c)
   (when (current-verbosity)
     (displayln "Building whole website"))
   (copy-root-directory)
@@ -136,17 +141,17 @@
 
 
 ;; Activate a file change service
-(define (watch-for-changes)
+(define/contract (watch-for-changes) (-> any/c)
   (define watcher-thread (proc-on-file-change run-task))
   (thread-wait watcher-thread))
   
 
 
 ;;
-(define (entry-point)
+(define/contract (entry-point) (-> any/c)
   (command-line
    #:program "builder"
-   #:args (action)
+   #:args    (action)
  
    (cond ([string=? action "build"] {build-whole-site})
          ([string=? action "tasks"] {run-all-tasks})
@@ -155,8 +160,7 @@
          ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
 
-(module+ main
-  (entry-point))
+(module+ main (entry-point))
   
 
 ; end
