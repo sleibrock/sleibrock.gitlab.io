@@ -9,6 +9,9 @@
          current-postscripts
          current-contents
          current-template
+         current-filetarget
+
+         current-verbosity
          )
 
 
@@ -22,6 +25,10 @@
 (define current-postscripts  (make-parameter ""))
 (define current-contents     (make-parameter ""))
 (define current-template     (make-parameter ""))
+(define current-filetarget   (make-parameter ""))
 
+
+;; non publishing parameters
+(define current-verbosity (make-parameter #f))
 
 ; end

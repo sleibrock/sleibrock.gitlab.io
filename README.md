@@ -11,3 +11,10 @@ This is my website, constructed with a lot of [Racket](https://racket-lang.org/)
 Without the `current-` prefix, it might appear as `file` somewhere in code, without a clear indication that it is indeed a parameter (unless for some reason you also wanted to add a `parameter?` call into the mix, but you really don't).
 
 **Requires** - try as best to constrain all `require` use to also have a `only-in` modifier on packages being imported. Without a `only-in` block, `require` will import all names/functions into our program, when we might only want a handful of functions.
+
+**Contracts** - the newest addition to the codebase which helps remove the burden of error-checking arguments from us. Code should instead use `define/contract` defined in `racket/contract` to create definitions. Contracts can be written as simple as `(-> string? any/c)`, which is a function that accepts a string, and returns a value of any kind. See [Racket Contracts](https://docs.racket-lang.org/reference/contracts.html) for more assistance.
+
+
+## Typed Racket?
+
+Still not entirely certain on it.

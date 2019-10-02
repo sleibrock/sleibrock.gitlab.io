@@ -27,21 +27,24 @@
          ;"tools/config.rkt"
          "tools/parameters.rkt"
 
+         (only-in "tools/logging.rkt"
+                  vprint
+                  )
          (only-in "tools/contracts.rkt"
                   file-path?
                   )
-
          (only-in "tools/filewatch.rkt"
                   proc-on-file-change
                   )
          )
 
-(provide *name*)
-
-(define root-directory      (path->complete-path "web"))
-(define build-directory     (path->complete-path "public"))
-(define task-directory      (path->complete-path "tasks"))
-(define templates-directory (path->complete-path "templates"))
+;; In order to use module+, we must provide definitions
+(provide *name*
+         *fullname*
+         *email*
+         *sitename*
+         *keybase*
+         )
 
 
 ;; Define some site-wide constant variables
@@ -52,6 +55,12 @@
 (define *keybase*  "https://keybase.io/sleibrock")
 
 
+;; Directory configurations for the project
+(define root-directory      (path->complete-path "web"))
+(define build-directory     (path->complete-path "public"))
+(define task-directory      (path->complete-path "tasks"))
+(define templates-directory (path->complete-path "templates"))
+
 
 ;; Publishing parameters (changes links, etc)
 (define production?       (make-parameter #f))
@@ -60,8 +69,10 @@
 (define current-file      (make-parameter ""))
 (define current-path      (make-parameter ""))
 (define current-task      (make-parameter ""))
-(define current-verbosity (make-parameter #t))
 
+
+; Set verbosity for maximum debug
+(current-verbosity #t)
 
 ;; Our namespace anchor in which definitions get loaded into.
 ;; Loading tasks will reference this namespace anchor accordingly
@@ -69,25 +80,32 @@
 
 
 ;; Renders a given xexpr tree to a filename
+;; Checks if the given fname path/directory structure exists
+;; and creates it using make-directory*
 (define/contract (xexpr->file xexpr-t fname) (-> xexpr? string? any/c)
   (define fpath (string->path fname))
-  (unless (xexpr? xexpr-t)
-    (error "xexpr->file: not supplied a Xexpr tree"))
+  (define-values (dir fp b)
+    (split-path fpath))
+  (unless (directory-exists? dir)
+    (make-directory* dir))
   (call-with-output-file fpath 
     #:exists 'replace
     (λ (output-port)
       (parameterize ([current-output-port output-port])
         (display "<!doctype html>")
         (write-xml/content (xexpr->xml xexpr-t)))))
-  (when (current-verbosity)
-    (displayln "Finished writing file")))
+  (vprint "Finished writing file"))
 
 
+;; A shortcut function to use in tasks
+;; Applies xexpr->file to our current-template parameter
+;; with a supplied filepath
 (define/contract (render-to fname) (-> string? any/c)
   (xexpr->file ((current-template)) fname))
 
 
-
+;; Load a template file by filename from the templates directory.
+;; Each template file should set the current-template parameter
 (define/contract (load-template fname) (-> string? any/c)
   (define fpath (build-path templates-directory fname))
   (define cn (namespace-anchor->namespace a))
@@ -95,47 +113,43 @@
     (load fpath)))
   
 
-
-;;
+;; Copy the root directory over to our build directory (web->public)
+;; This is mostly used to copy non-codebound files (images/js/css/etc)
 (define/contract (copy-root-directory) (-> any/c)
-  (when (current-verbosity)
-    (displayln "Copying root directory to build directory"))
+  (vprint "Copying root directory to build directory")
   (when (directory-exists? build-directory)
       (delete-directory/files build-directory))
   (copy-directory/files root-directory build-directory))
 
 
-;;
+;; Remove the build directory just to clean it up
 (define/contract (clean-build-directory) (-> any/c)
-  (when (current-verbosity)
-    (displayln "Deleting build directory"))
+  (vprint "Deleting build directory")
   (when (directory-exists? build-directory)
     (delete-directory/files build-directory)))
 
 
-;;
-(define (run-task task-path) (-> (and/c file-exists? path?) any/c)
+;; Run a given task file path and evaluate it
+(define/contract (run-task task-path) (-> (and/c file-exists? path?) any/c)
   (define cn (namespace-anchor->namespace a))
   (parameterize ([current-namespace cn]
                  [current-file task-path]
                  [current-path task-path])
-    (when (current-verbosity)
-      (displayln (format "Executing '~a'" (current-file))))
+    (vprint (format "Executing '~a'" (current-file)))
     (load task-path)))
 
 
 ;; Apply run-task to all valid task file paths in the /tasks folder
-(define/contract (run-all-tasks)
-  (-> any/c)
+(define/contract (run-all-tasks) (-> any/c)
   (for-each run-task
             (filter file-path? 
                     (directory-list #:build? #t task-directory))))
 
 
-;;
+;; A function which just incorporates the entire build process
+;; Is only used from the entry point section
 (define/contract (build-whole-site) (-> any/c)
-  (when (current-verbosity)
-    (displayln "Building whole website"))
+  (vprint "Building whole website")
   (copy-root-directory)
   (run-all-tasks))
 
@@ -144,7 +158,6 @@
 (define/contract (watch-for-changes) (-> any/c)
   (define watcher-thread (proc-on-file-change run-task))
   (thread-wait watcher-thread))
-  
 
 
 ;;
@@ -160,6 +173,8 @@
          ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
 
+
+; Add running entry-point as our main module
 (module+ main (entry-point))
   
 

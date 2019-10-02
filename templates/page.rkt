@@ -14,9 +14,12 @@
      (body
       (div ([id "container"])
            (div ([id "navbar"])
-                (span ([id "navtitle"]) "Steven's Site")
+                (span ([id "navtitle"])
+                      ,(link-to "Steven's Site" "/"))
                 (span ([class "navlink"])
-                      ,(link-to "About" "about.html")))
+                      ,(link-to "About" "about.html"))
+                (span ([class "navlink"])
+                      ,(link-to "Writings" "pages.html")))
            
            (div ([id "content"])
                 (article
