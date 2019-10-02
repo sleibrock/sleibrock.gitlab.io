@@ -33,9 +33,9 @@
 
 
 ; Do this afterwards
-(current-title "Pages | Steven's Site")
+(current-title       "Pages | Steven's Site")
 (current-description "Steven's writing pages")
-(current-keywords "Steven Leibrock writings")
+(current-keywords    "Steven Leibrock writings")
 (current-stylesheets '("static/css/style.css"))
 (current-contents
  (cons
