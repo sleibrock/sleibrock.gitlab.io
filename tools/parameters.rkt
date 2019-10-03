@@ -1,5 +1,14 @@
 #lang racket/base
 
+(require (only-in racket/contract
+                  define/contract
+                  parameter/c
+                  or/c
+                  none/c
+                  listof
+                  ->
+                  ))
+
 (provide current-title
          current-date
          current-description
@@ -12,23 +21,66 @@
          current-filetarget
 
          current-verbosity
+         current-task
+         production?
          )
 
 
+;; Publishing content based parameters
+(define/contract current-title
+  (parameter/c string?)
+  (make-parameter ""))
 
-(define current-title        (make-parameter ""))
-(define current-date         (make-parameter ""))
-(define current-description  (make-parameter ""))
-(define current-keywords     (make-parameter ""))
-(define current-stylesheets  (make-parameter ""))
-(define current-scripts      (make-parameter ""))
-(define current-postscripts  (make-parameter ""))
-(define current-contents     (make-parameter ""))
-(define current-template     (make-parameter ""))
-(define current-filetarget   (make-parameter ""))
+(define/contract current-date
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract current-description
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract current-keywords
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract current-stylesheets
+  (parameter/c (listof string?)) 
+  (make-parameter '()))
+
+(define/contract current-scripts
+  (parameter/c (listof string?))
+  (make-parameter '()))
+
+(define/contract current-postscripts
+  (parameter/c (listof string?))
+  (make-parameter '())) 
+
+(define/contract current-contents
+  (parameter/c list?)
+  (make-parameter '()))
+
+(define/contract current-template
+  (parameter/c (-> list?))
+  (make-parameter ""))
+
+(define/contract current-filetarget
+  (parameter/c string?)
+  (make-parameter ""))
 
 
 ;; non publishing parameters
-(define current-verbosity (make-parameter #f))
+(define/contract current-verbosity
+  (parameter/c boolean?)
+  (make-parameter #f))
+
+(define/contract current-task
+  (parameter/c (or/c string? path?))
+  (make-parameter ""))
+
+(define/contract production?
+  (parameter/c boolean?)
+  (make-parameter #f))
+
+
 
 ; end

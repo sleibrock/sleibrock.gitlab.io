@@ -5,11 +5,12 @@
 (define/contract page-files list?
   (directory-list #:build? #t (path->complete-path "pages")))
 
-; Create an easy-to-pass tuple
+;; Create an easy-to-pass tuple
 (struct page (title desc date file))
 
-; Gather page data
-(define/contract page-data list?
+;; Gather page data
+(define/contract page-data
+  (listof page?)
   (map
    (λ (page-task-path)
      (parameterize

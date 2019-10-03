@@ -6,8 +6,6 @@
 (current-filetarget  "about-website.html")
 (current-date        "2019-10-2")
 
-(current-stylesheets '("../static/css/style.css"))
-
 (current-contents
  `((p "I'm gonna take some time to explain the mental gymnastics I went through creating this website in such a weird and unique way that I don't think many other people will ever attempt to do: using Racket.")
 
@@ -35,7 +33,7 @@
 
    (p "How it works is that Racket will load a file and evaluate the code as-is with the current namespace of Racket functions. To make it simple, I create a set of functions to use within tasks that simplify the process to create a web page (or multiple).")
 
-   (p "However I had some shortcomings; evaluating files doesn't import definitions, it just runs the code. The only way to communicate from the parent process to the evaluated code is using parameters to modify data. This actually isn't a problem for me, and I can make great use of it.")
+   (p "However I had some shortcomings; evaluating files doesn't import definitions, it just runs the code. The only way to communicate from the parent process to the evaluated code is using parameters to modify data. This actually isn't a problem for me, and I can make great use of it. (Importing definitions requires some additional work from racket/load)")
 
    (p "If I create a bunch of parameters, it's easy to pass data between evalulated files. I can set a title, a date, descriptions, stylesheets, and even the page's contents itself. This leads to another tidbit: templates. X-expression re-use is vital as I don't want to spend a lot of time copy/pasting templates between tasks. It's better just to share. So alongside tasks, there's template files, which get evaluated in the same way, but toggle a parameter which gives us a template function. The template's function job is to give us a template each time it's called, which will also lazy-call parameters for us. If not for the lazy-call, parameters will be evaluated before they're even set.")
 
@@ -54,5 +52,15 @@
    (p "I said that tasks should have responsibilities, so the responsibility for this section (and hopefully many others) will rely on a task to sub-evaluate certain files as well for indexing purposes.")
 
    (p "The pages task's goal is to evaluate a list of pages, and generate an index from which they can be browsed. With more parameter tricks, we can do that. It's just as simple as generating a list of files, using my special run-task function, and collecting data from parameters to create an index.")
+
+   (h2 "Live File Rebuilding")
+
+   (p "This part is a struggle, and might continue to be one for a while, because there's no clear-cut solution to it. While developing, it's easier to just rebuild files when they change as opposed to having to rebuild the entire project. But because of how my tasks are delegated, that causes a little bit of tricky tracking.")
+
+   (p "It's easy to watch a given file for changes with some events in Racket, it's harder to keep track of multiple files, but when files are hidden behind task execution stages, then it's probably a very hard thing to keep track of.")
+
+   (p "One idea here is to simply monitor files which are utilized by the tasks and keep a list of associations for files. If pages.rkt builds multiple pages, monitor all the pages, and if any of them ever change, just re-execute the pages.rkt task. Not exactly precise since that may rebuild all the pages over again despite not all of them changing, but it's close.")
+
+   (p "There may be alternate strategies I could employ, but I'm not too worried about it right now. The better my code becomes, the less I'm rebuilding to look for mistakes.")
 
    ))
