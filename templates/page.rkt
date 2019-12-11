@@ -15,15 +15,17 @@
       (div ([id "container"])
            (div ([id "navbar"])
                 (span ([id "navtitle"])
-                      ,(link-to "Steven's Site" "/"))
+                      ,(root-link "Steven's Site" "index.html"))
                 (span ([class "navlink"])
-                      ,(link-to "About" "about.html"))
+                      ,(root-link "About" "about.html"))
                 (span ([class "navlink"])
-                      ,(link-to "Writings" "pages.html")))
+                      ,(root-link "Writings" "pages.html")))
            
            (div ([id "content"])
                 (article
                  ,(cons 'section (current-contents))))
            
            (div ([id "footer"])
-                (p "Steven Leibrock 2019"))))))) 
+                (p "Steven Leibrock 2019"
+                   " >>= "
+                   ,(root-link "home" "index.html")))))))) 

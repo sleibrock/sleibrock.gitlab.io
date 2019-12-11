@@ -53,6 +53,7 @@
 (define/contract *fullname* string? "Steven Leibrock")
 (define/contract *email*    string? "steven.leibrock@gmail.com")
 (define/contract *sitename* string? "Steven's Site")
+(define/contract *sitepath* string? "https://sleibrock.xyz")
 (define/contract *keybase*  string? "https://keybase.io/sleibrock")
 
 
@@ -151,8 +152,13 @@
 ;; Is only used from the entry point section
 (define/contract (build-whole-site) (-> any/c)
   (vprint "Building whole website")
+  (unless (production?)
+      (current-basepath (path->string build-directory)))
   (copy-root-directory)
-  (run-all-tasks))
+  (run-all-tasks)
+  (displayln (format "Site written to ~a~a"
+                     (if (production?) "" "file://")
+                     (path->string build-directory))))
 
 
 ;; Activate a file change service
@@ -165,8 +171,12 @@
 (define/contract (entry-point) (-> any/c)
   (command-line
    #:program "builder"
+
+   #:once-each [("-p" "--prod") "Build site for production"
+                                (displayln "**PRODUCTION MODE SET**")
+                                (production? #t)
+                                (current-basepath *sitepath*)]
    #:args    (action)
- 
    (cond ([string=? action "build"] {build-whole-site})
          ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})

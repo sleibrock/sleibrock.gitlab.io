@@ -16,7 +16,7 @@ pages:
   stage: deploy
   script:
   - echo "Nothing here!"
-  - make build 
+  - make prod 
   artifacts:
     paths:
     - public
