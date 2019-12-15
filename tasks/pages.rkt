@@ -18,6 +18,7 @@
           [current-description ""]
           [current-date        ""]
           [current-keywords    ""]
+          [current-contents    '()]
           [current-stylesheets '("../static/css/style.css")]
           [current-scripts     '()]
           [current-postscripts '()]

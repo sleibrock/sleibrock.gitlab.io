@@ -6,7 +6,6 @@
 
 (current-stylesheets '("static/css/style.css"))
 
-
 (current-contents
  `((p "Hi there, my name is Steven Leibrock, and I am a generic computer nerd of many degrees.")
 
@@ -20,7 +19,5 @@
 
    ,(unordered-list (list (link-to "Keybase" "https://keybase.io/sleibrock")
                           (link-to "Instagram" "https://instagram.com/sleibrock")))))
-
-
 
 (render-to "public/about.html")

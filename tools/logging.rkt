@@ -1,15 +1,16 @@
 #lang racket/base
 
 
-(require (only-in racket/contract
-                  define/contract
-                  ->
-                  any/c
-                  )
-         (only-in "parameters.rkt"
-                  current-verbosity
-                  )
-         )
+(require
+ (only-in racket/contract
+          define/contract
+          ->
+          any/c
+          )
+ (only-in "parameters.rkt"
+          current-verbosity
+          )
+ )
 
 (provide vprint
          )

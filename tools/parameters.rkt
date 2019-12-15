@@ -1,13 +1,14 @@
 #lang racket/base
 
-(require (only-in racket/contract
-                  define/contract
-                  parameter/c
-                  or/c
-                  none/c
-                  listof
-                  ->
-                  ))
+(require
+ (only-in racket/contract
+          define/contract
+          parameter/c
+          or/c
+          none/c
+          listof
+          ->
+          ))
 
 (provide current-title
          current-date
@@ -24,7 +25,6 @@
          current-verbosity
          current-task
          production?
-         writing-mode?
          )
 
 
@@ -96,26 +96,24 @@
   (make-parameter (path->string (path->complete-path "."))))
 
 
-;; non publishing parameters
+;; Determine if we should publish more verbose output
 (define/contract current-verbosity
   (parameter/c boolean?)
   (make-parameter #f))
 
+
+;; The current task being ran
 (define/contract current-task
   (parameter/c (or/c string? path?))
   (make-parameter ""))
 
+
+; Determines if we are set for production mode
+; Production mode will change functionality for most
+; website-publishing tools like root links, paths, etc
 (define/contract production?
   (parameter/c boolean?)
   (make-parameter #f))
-
-
-; Determine if a script is in writing mode
-; All HTML shortcuts will be pushed to current-contents
-(define/contract writing-mode?
-  (parameter/c boolean?)
-  (make-parameter #f))
-
 
 
 ; end

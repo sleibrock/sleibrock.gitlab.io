@@ -14,7 +14,3 @@ Without the `current-` prefix, it might appear as `file` somewhere in code, with
 
 **Contracts** - the newest addition to the codebase which helps remove the burden of error-checking arguments from us. Code should instead use `define/contract` defined in `racket/contract` to create definitions. Contracts can be written as simple as `(-> string? any/c)`, which is a function that accepts a string, and returns a value of any kind. See [Racket Contracts](https://docs.racket-lang.org/reference/contracts.html) for more assistance.
 
-
-## Typed Racket?
-
-Still not entirely certain on it.

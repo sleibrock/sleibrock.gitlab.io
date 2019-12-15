@@ -1,8 +1,9 @@
 #lang racket/base
 
-(require (only-in "contracts.rkt"
-                  file-path?
-                  ))
+(require
+ (only-in "contracts.rkt"
+          file-path?
+          ))
 
 (provide proc-on-file-change
          )

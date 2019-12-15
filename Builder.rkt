@@ -1,43 +1,44 @@
 #lang racket/base
 
-(require (only-in xml
-                  xexpr?
-                  xexpr->xml
-                  write-xml/content
-                  validate-xexpr
-                  )
-         (only-in racket/contract
-                  ->
-                  any/c
-                  none/c
-                  and/c
-                  listof
-                  define/contract
-                  )
-         (only-in racket/cmdline
-                  command-line
-                  )
-         (only-in racket/file
-                  copy-directory/files
-                  delete-directory/files
-                  make-directory*
-                  )
-
-         ;; custom tooling (only-in not very necessary)
-         "tools/html-shortcuts.rkt"
-         ;"tools/config.rkt"
-         "tools/parameters.rkt"
-
-         (only-in "tools/logging.rkt"
-                  vprint
-                  )
-         (only-in "tools/contracts.rkt"
-                  file-path?
-                  )
-         (only-in "tools/filewatch.rkt"
-                  proc-on-file-change
-                  )
-         )
+(require
+ (only-in xml
+          xexpr?
+          xexpr->xml
+          write-xml/content
+          validate-xexpr
+          )
+ (only-in racket/contract
+          ->
+          any/c
+          none/c
+          and/c
+          listof
+          define/contract
+          )
+ (only-in racket/cmdline
+          command-line
+          )
+ (only-in racket/file
+          copy-directory/files
+          delete-directory/files
+          make-directory*
+          )
+ 
+ ;; custom tooling (only-in not very necessary)
+ "tools/html-shortcuts.rkt"
+ ;"tools/config.rkt"
+ "tools/parameters.rkt"
+ 
+ (only-in "tools/logging.rkt"
+          vprint
+          )
+ (only-in "tools/contracts.rkt"
+          file-path?
+          )
+ (only-in "tools/filewatch.rkt"
+          proc-on-file-change
+          )
+ )
 
 ;; In order to use module+, we must provide definitions
 (provide *name*
@@ -136,7 +137,7 @@
   (-> (and/c file-exists? path?) any/c)
   (define cn (namespace-anchor->namespace a))
   (parameterize ([current-namespace cn]
-                 [current-task task-path])
+                 [current-task      task-path])
     (vprint (format "Executing '~a'" task-path))
     (load task-path)))
 
