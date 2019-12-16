@@ -7,10 +7,12 @@
  (only-in racket/contract
           define/contract
           ->
+          any/c
           )
  (only-in "parameters.rkt"
           production?
           current-basepath
+          current-contents
           ))
 
 
@@ -23,6 +25,17 @@
          table-of-contents
 
          gist
+
+
+         para
+         h1
+         h2
+         h3
+         h4
+         h5
+         code
+         ul
+         ;ol
          )
 
 (define/contract (link-to str url)
@@ -67,6 +80,31 @@
 (define/contract (gist url)
   (-> string? xexpr?)
   `(script ([src ,(string-append "https://gist.github.com/" url ".js")]) ""))
+
+
+
+
+;; Writing mode assisted functions
+(define/contract (push-to-contents anything)
+  (-> list? any/c)
+  (current-contents (append (current-contents) anything)))
+
+(define/contract (tag-wrap sym data)
+  (-> symbol? list? any/c)
+  (push-to-contents (list (cons sym data))))
+
+
+(define (para . restargs) (tag-wrap 'p restargs))
+(define (h1 . restargs) (tag-wrap 'h1 restargs))
+(define (h2 . restargs) (tag-wrap 'h2 restargs))
+(define (h3 . restargs) (tag-wrap 'h3 restargs))
+(define (h4 . restargs) (tag-wrap 'h4 restargs))
+(define (h5 . restargs) (tag-wrap 'h5 restargs))
+
+(define (code . restargs) (tag-wrap 'pre restargs))
+
+(define (ul lst)
+  (push-to-contents (list (unordered-list lst))))
 
 
 ; end

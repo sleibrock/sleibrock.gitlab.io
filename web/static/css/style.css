@@ -7,6 +7,7 @@ body {
     font-size: 18px;
     color: rgb(191,191,191);
     padding: 10px;
+    font-family: Arial;
 }
 
 h1,h2,h3,h4,h5 {
@@ -68,6 +69,13 @@ svg {
     text-align: center;
 }
 
+pre {
+    padding: 10px;
+    color: #ddd;
+    font-size: 12px;
+    color: #d1b38a
+}
+
 
 /* html special shortcut functions */
 
@@ -82,7 +90,6 @@ svg {
 .code-block {
     padding: 10px;
     background-color: #ddd;
-    color: #111;
 }
 
 .caption-img-block {

@@ -139,7 +139,8 @@
   (parameterize ([current-namespace cn]
                  [current-task      task-path])
     (vprint (format "Executing '~a'" task-path))
-    (load task-path)))
+    (load task-path))
+  (vprint (format "Finished executing ~a" task-path)))
 
 
 ;; Apply run-task to all task file paths in the /tasks folder
