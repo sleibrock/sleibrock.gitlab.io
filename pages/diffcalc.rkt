@@ -123,11 +123,11 @@ simplify (Add (Mul (Const (-1)) a) b) = Sub b a
 (para "Lastly here's some remaining ones, specifically involving the Euler identity.")
 
 (code "
-> -- euler identities of sin(x)^2 + cos(x)^2 = 1
-> simplify (Add (Pow (Sin f) (Const 2)) (Pow (Cos g) (Const 2))) | f == g = Const 1
-> simplify (Add (Pow (Cos f) (Const 2)) (Pow (Sin g) (Const 2))) | f == g = Const 1
-> simplify (Sub (Mul (Const (-1)) (Pow (Sin f) (Const 2))) (Pow (Cos g) (Const 2))) | f == g = Const (-1)
-> simplify (Sub (Mul (Const (-1)) (Pow (Cos f) (Const 2))) (Pow (Sin g) (Const 2))) | f == g = Const (-1)
+-- euler identities of sin(x)^2 + cos(x)^2 = 1
+simplify (Add (Pow (Sin f) (Const 2)) (Pow (Cos g) (Const 2))) | f == g = Const 1
+simplify (Add (Pow (Cos f) (Const 2)) (Pow (Sin g) (Const 2))) | f == g = Const 1
+simplify (Sub (Mul (Const (-1)) (Pow (Sin f) (Const 2))) (Pow (Cos g) (Const 2))) | f == g = Const (-1)
+simplify (Sub (Mul (Const (-1)) (Pow (Cos f) (Const 2))) (Pow (Sin g) (Const 2))) | f == g = Const (-1)
 ")
 
 (para "Not that I think you'll run into these issues very often, but it happens quite a bit when doing trigonometric differentiation (we'll see later). Look at how all those nested values can be reduced so easily. It's ugly, but in the end, it's funny how it all boils down to a simple one.")

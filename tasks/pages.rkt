@@ -54,6 +54,6 @@
               (br)
               (sub "Posted ",(page-date page-chunk)))))
               
-   page-data)))
+   (sort page-data string>? #:key page-date))))
 
 (render-to "public/pages.html")
