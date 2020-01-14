@@ -131,7 +131,7 @@
   (define cn (namespace-anchor->namespace a))
   (parameterize ([current-namespace cn]
                  [current-task      task-path])
-    (vprint (format "Executing '~a'" task-path))
+    (vprint (format "Executing ~a" task-path))
     (load task-path))
   (vprint (format "Finished executing ~a" task-path)))
 
@@ -159,11 +159,12 @@
 
 
 ;; Activate a file change service
+#| deprecating
 (define/contract (watch-for-changes)
   (-> any/c)
   (define watcher-thread (proc-on-file-change run-task))
   (thread-wait watcher-thread))
-
+|#
 
 ;;
 (define/contract (entry-point)
@@ -174,12 +175,12 @@
    #:once-each [("-p" "--prod") "Build site for production"
                                 (displayln "**PRODUCTION MODE SET**")
                                 (production? #t)
-                                (current-basepath *sitepath*)]
-   #:args    (action)
+                                (current-basepath (*sitepath*))]
+   #:args (action)
    (cond ([string=? action "build"] {build-whole-site})
          ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})
-         ([string=? action "watch"] {watch-for-changes})
+         ;([string=? action "watch"] {watch-for-changes})
          ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
 
