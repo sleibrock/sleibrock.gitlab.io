@@ -10,7 +10,14 @@
           ->
           ))
 
-(provide current-title
+(provide *name*
+         *fullname*
+         *email*
+         *sitename*
+         *sitepath*
+         *keybase*
+
+         current-title
          current-date
          current-description
          current-keywords
@@ -26,6 +33,32 @@
          current-task
          production?
          )
+
+;; Personal configuration strings/etc
+(define/contract *name*
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract *fullname*
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract *email*
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract *sitename*
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract *sitepath*
+  (parameter/c string?)
+  (make-parameter ""))
+
+(define/contract *keybase*
+  (parameter/c string?)
+  (make-parameter ""))
+
 
 
 ;; Publishing content based parameters

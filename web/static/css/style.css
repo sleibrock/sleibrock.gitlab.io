@@ -2,12 +2,12 @@
 body {
     background-color: rgb(18,18,18);
     margin: 10px auto;
-    max-width: 800px;
+    max-width: 700px;
     line-height: 1.6;
-    font-size: 18px;
+    font-size: 16px;
     color: rgb(191,191,191);
     padding: 10px;
-    font-family: Arial;
+    font-family: "Open Sans", sans-serif;
 }
 
 h1,h2,h3,h4,h5 {
@@ -79,6 +79,12 @@ pre {
 
 /* html special shortcut functions */
 
+.kbimg-div {
+    padding: 2px;
+    font-size: 12px;
+    margin: 0 auto;
+    color: rgb(209, 179, 138);
+}
 
 .code-label {
     padding: 2px;

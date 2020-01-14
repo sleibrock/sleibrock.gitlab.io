@@ -5,7 +5,7 @@
             (append
              (map css (current-stylesheets))
              `((title              ,(current-title))
-               (meta ([author      ,*fullname*]))
+               (meta ([author      ,(*fullname*)]))
                (meta ([keywords    ,(current-keywords)]))
                (meta ([description ,(current-description)]))
                (meta ([charset     "utf-8"]))
@@ -26,6 +26,6 @@
                  ,(cons 'section (current-contents))))
            
            (div ([id "footer"])
-                (p "Steven Leibrock 2019"
-                   " >>= "
+                (p ,(*fullname*)
+                   " 2019 >>= "
                    ,(root-link "home" "index.html")))))))) 

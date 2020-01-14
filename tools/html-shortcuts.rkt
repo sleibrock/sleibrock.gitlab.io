@@ -10,6 +10,7 @@
           any/c
           )
  (only-in "parameters.rkt"
+          *keybase*
           production?
           current-basepath
           current-contents
@@ -23,9 +24,9 @@
          unordered-list
          ordered-list
          table-of-contents
+         keybase-img
 
          gist
-
 
          para
          h1
@@ -35,7 +36,9 @@
          h5
          code
          ul
-         ;ol
+         ol
+
+         kbi
          )
 
 (define/contract (link-to str url)
@@ -82,6 +85,14 @@
   `(script ([src ,(string-append "https://gist.github.com/" url ".js")]) ""))
 
 
+(define/contract (keybase-img quotstr imgurl)
+  (-> string? string? xexpr?)
+  (let ([kburl (string-append (*keybase*) imgurl)])
+    `(div ([class "kbimg-div"])
+          (a ([href ,kburl])
+             (img ([src  ,kburl]
+                   [alt   ,quotstr])))
+          (p ([class "img-desc"]) ,quotstr))))
 
 
 ;; Writing mode assisted functions
@@ -105,6 +116,12 @@
 
 (define (ul lst)
   (push-to-contents (list (unordered-list lst))))
+
+(define (ol lst)
+  (push-to-contents (list (ordered-list lst))))
+
+(define (kbi str imgurl)
+  (push-to-contents (list (keybase-img str imgurl))))
 
 
 ; end

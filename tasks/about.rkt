@@ -17,7 +17,36 @@
 
    (p "Below are social medias")
 
-   ,(unordered-list (list (link-to "Keybase" "https://keybase.io/sleibrock")
-                          (link-to "Instagram" "https://instagram.com/sleibrock")))))
+   ,(unordered-list
+     (list
+      (link-to "Keybase" "https://keybase.io/sleibrock")
+      (link-to "Instagram" "https://instagram.com/sleibrock")))
+
+   (h2 "Computer Gear")
+
+   (p "Here is an (almost) accurate list of what my computer parts are for my desktop.")
+
+   ,(unordered-list
+     '("CPU := AMD FX-8350"
+       "GPU := MSI Radeon RX 480"
+       "Motherboard := GIGABYTE GA-78LMT"
+       "SSD := Samsung 860 EVO 500GB"
+       "RAM := 16GB (8x2) Corsair 1600MHz DDR3"
+       "Cooling := Corsair H110i Water Cooler"
+       "Mouse := Logitech G400s"
+       "Keyboard := Corsair K70 Cherry MX"
+       "OS := NixOS"))
+
+   (p "Other devices are as follows:")
+
+   ,(unordered-list
+     '("Refurbished Thinkpad T440 (240GB, NixOS)"
+       "iPad Pro 2017 edition 64GB"
+       "Alienware Alpha (240GB, NixOS)"))
+
+   ; more as follows when needed
+
+   ))
+     
 
 (render-to "public/about.html")

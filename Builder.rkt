@@ -40,22 +40,15 @@
           )
  )
 
-;; In order to use module+, we must provide definitions
-(provide *name*
-         *fullname*
-         *email*
-         *sitename*
-         *keybase*
-         )
 
+(provide root-directory)
 
-;; Define some site-wide constant variables
-(define/contract *name*     string? "Steven")
-(define/contract *fullname* string? "Steven Leibrock")
-(define/contract *email*    string? "steven.leibrock@gmail.com")
-(define/contract *sitename* string? "Steven's Site")
-(define/contract *sitepath* string? "https://sleibrock.xyz")
-(define/contract *keybase*  string? "https://keybase.io/sleibrock")
+(*name*     "Steven")
+(*fullname* "Steven Leibrock")
+(*email*    "steven.leibrock@gmail.com")
+(*sitename* "Steven's Site")
+(*sitepath* "https://sleibrock.xyz")
+(*keybase*  "https://sleibrock.keybase.pub/")
 
 
 ;; Directory configurations for the project
@@ -147,12 +140,14 @@
 ;; Note: only tasks go in the task folder, don't put anything else
 (define/contract (run-all-tasks)
   (-> any/c)
-  (for-each run-task (directory-list #:build? #t task-directory)))
+  (for-each run-task
+            (directory-list #:build? #t task-directory)))
 
 
 ;; A function which just incorporates the entire build process
 ;; Is only used from the entry point section
-(define/contract (build-whole-site) (-> any/c)
+(define/contract (build-whole-site)
+  (-> any/c)
   (vprint "Building whole website")
   (unless (production?)
       (current-basepath (path->string build-directory)))
@@ -164,13 +159,15 @@
 
 
 ;; Activate a file change service
-(define/contract (watch-for-changes) (-> any/c)
+(define/contract (watch-for-changes)
+  (-> any/c)
   (define watcher-thread (proc-on-file-change run-task))
   (thread-wait watcher-thread))
 
 
 ;;
-(define/contract (entry-point) (-> any/c)
+(define/contract (entry-point)
+  (-> any/c)
   (command-line
    #:program "builder"
 
@@ -188,7 +185,8 @@
 
 
 ; Add running entry-point as our main module
-(module+ main (entry-point))
+(module+ main
+  (entry-point))
   
 
 ; end
