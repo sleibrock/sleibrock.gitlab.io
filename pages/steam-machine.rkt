@@ -57,7 +57,7 @@
 
 (para "So my starting point goes back to this: is SteamOS worth using now, years after it's release, where it seemingly has little-to-no future of being updated? It seems that all SteamOS does is bootstrap into a basic Steam Docker-like container so that Steam can take control of the heavy lifting as far as managing video drivers (I'm pretty certain Steam includes a basic Ubuntu environment of sorts for graphics).")
 
-(para "So off we go to our fancy NixOS live image and we start building a Nix configuration from scratch right from the get-go. I can lift a lot of heavy-lifting by using some lines of my " (link-to "current NixOS config" "https://github.com/sleibrock/nixfiles/blob/master/configuration.nix") " and playing around, so that saves some time. A big thing that I can immediately be sure that will work are the Steam Controllers themselves, since I figured out how to incorporate their udev rules by previous Google research.")
+(para "So off we go to our fancy NixOS live image and we start building a Nix configuration from scratch right from the get-go. I can avoid a lot of heavy-lifting by using some lines of my " (link-to "current NixOS config" "https://github.com/sleibrock/nixfiles/blob/master/desktop/configuration.nix") " and playing around, so that saves some time. A big thing that I can immediately be sure that will work are the Steam Controllers themselves, since I figured out how to incorporate their udev rules by previous Google research.")
 
 (para "In my household, there's a bias towards Windows as the premier gaming platform since we've all grown around it. I however have only been using NixOS as my personal desktop environment for a few months now, and I would rather be pretty firm in not using Windows in this instance since it would lead down a path of darkness. Because of that, we will have to rely on Steam's Proton/Wine system to do any work in running Windows-only applications. This could be something of an issue on older hardware, but I'm certain whatever we'd want to run on this tiny piece of hardware will be fine. We naturally aren't going to run " (link-to "The Witcher 3" "https://store.steampowered.com/app/292030/The_Witcher_3_Wild_Hunt/") " on here anytime soon.")
 
@@ -69,17 +69,53 @@
 
 (para "The next step is actually installing NixOS itself. Using my handy-dandy NixOS USB drive that I have from installing NixOS on two other devices, so I'm just gonna pop this in and see what happens.")
 
+(code "
+# doesn't actually work
+$ sudo systemctl start display-manager
+")
+
 (para "So the system is able to boot into the live environment, but for whatever reason, starting up the KDE desktop fails? Not the biggest deal but it would have been nice to have a live working environment before installing it. But I have no fear since I didn't wipe the SteamOS install and can always fall back to that for safety.")
 
 (para "The normal NixOS manual install steps work, and doing a preliminary config file gets me a fully working NixOS system. The Alienware Alpha does indeed come with a wireless card, so turning on NetworkManager covers all of that good stuff. So let's dive into getting Steam to work.")
 
 (para "After a lot of trials on different games, I realized that I never properly configured the Nvidia drivers to ever be installed. I tried several games, some didn't work, and then had the realization I lacked drivers after much Googling. There are a lot of packages intended to work around this, but quite frankly I had issues with them working. So I just used the tried-and-true default Steam package and configured Nix to look for Nvidia drivers. After this the build time took several minutes, so a lot of time spent waiting...")
 
+(code "
+  nixpkgs.config.allowUnfree = true;
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.pulseaudio.support32Bit = true;
+  services.xserver.videoDrivers = [ \"intel\" \"nvidia\" ];
+  hardware.bumblebee.connectDisplay = true;
+  hardware.bumblebee.driver = \"nvidia\";
+")
+
 (para "Once they were installed, games started working magically with Steam's Proton layer. I tried 'The Witness', one of my favorite puzzle games, before installing drivers and it was unusable. Then once I turned on the Nvidia drivers, it worked much better, although not perfect.")
 
 (para "Since this is a box intended for Steam Big Picture purposes, it would help if I could amend something to the system to turn on Steam automatically. Here I'm using xfce4, so I head over to the sessions part of the settings manager and put Steam on through the autostart at the beginning of sessions. I also have my user profile auto-logged in with sddm")
 
+(code "
+  # Enable the xfce4 environment with sddm autologin 
+  services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    autoLogin = {
+      enable = true;
+      user = \"steve\";
+    };
+  };
+")
+
 (para "The Steam Controllers are the next obstacle that I've already solved from my desktop NixOS. Udev rules have to be added in order for the controllers to be properly recognized by software, so it's a matter of identifying which devices are specifically Steam Controllers. I was able to figure out the serial codes from a Nix package I didn't feel much like incorporating and instead hard-coded myself.")
+
+(code "
+  services.udev.extraRules = ''
+    SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"28de\", MODE=\"0666\"
+    KERNEL==\"hidraw*\", ATTRS{idVendor}==\"28de\", MODE=\"0666\"
+    KERNEL==\"hidraw*\", KERNELS==\"*28DE:*\", MODE=\"0666\"
+    ...
+  '';
+")
 
 (para "So after getting all the software installed via Nix, proper kernel modules and udev rules, testing the four controllers in my possession and sync'ing them to the single receiver plugged into the underside of the console, I think I can finally say that I have a Steam Machine running NixOS successfully. We will be migrating it and really testing it over in the living room in a few days time and giving it some tests and making changes based on feedback slowly.")
 

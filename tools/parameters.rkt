@@ -17,6 +17,8 @@
          *sitepath*
          *keybase*
 
+         articles-per-page
+         
          current-title
          current-date
          current-description
@@ -58,6 +60,12 @@
 (define/contract *keybase*
   (parameter/c string?)
   (make-parameter ""))
+
+
+;; Number of articles per page
+(define/contract articles-per-page
+  (parameter/c number?)
+  (make-parameter 10))
 
 
 
