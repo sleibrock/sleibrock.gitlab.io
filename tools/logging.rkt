@@ -16,7 +16,8 @@
          )
 
 
-(define/contract (vprint msg) (-> string? any/c)
+(define/contract (vprint msg)
+  (-> string? any/c)
   (when (current-verbosity)
     (displayln msg)))
 

@@ -26,7 +26,6 @@
  
  ;; custom tooling (only-in not very necessary)
  "tools/html-shortcuts.rkt"
- ;"tools/config.rkt"
  "tools/parameters.rkt"
  
  (only-in "tools/logging.rkt"
@@ -34,9 +33,6 @@
           )
  (only-in "tools/contracts.rkt"
           file-path?
-          )
- (only-in "tools/filewatch.rkt"
-          proc-on-file-change
           )
  )
 
@@ -158,14 +154,6 @@
                      (path->string build-directory))))
 
 
-;; Activate a file change service
-#| deprecating
-(define/contract (watch-for-changes)
-  (-> any/c)
-  (define watcher-thread (proc-on-file-change run-task))
-  (thread-wait watcher-thread))
-|#
-
 ;;
 (define/contract (entry-point)
   (-> any/c)
@@ -181,7 +169,6 @@
          ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})
          ;([string=? action "watch"] {watch-for-changes})
-         ([string=? action "watch"] {displayln "bigshrug"})
          (else (displayln (format "error: invalid command '~a'" action))))))
 
 
