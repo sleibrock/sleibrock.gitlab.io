@@ -4,7 +4,7 @@
 (current-description "Repairing and replacing SteamOS")
 (current-keywords    "steamos steam machine nixos")
 (current-filetarget  "nix-machine.html")
-(current-date        "2020-01-02")
+(current-date        "2020-01-15")
 
 (para "I recently took into my possession a blast from the past: a four-year old machine. And by that I mean a " (link-to "Alienware Alpha" "https://www.dell.com/ng/p/alienware-steam-machine/pd") ". With some intention of replacing our 'living room entertainment PC' (a 10+ year old laptop), I had some ambitions with this, so let's dive into it right away.")
 
