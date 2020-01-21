@@ -108,3 +108,6 @@ canObtain (Node i (Just reqList)) iList = satisfied
      "web/lmr-final.png")
 
 (para "I have some minor interest in picking up another randomizer game, maybe something like " (link-to "Dark Souls 2" "https://store.steampowered.com/app/335300/DARK_SOULS_II_Scholar_of_the_First_Sin/") ", but I think I need to take a break from randomized games for a bit. La-Mulana randomized has been a blast, and I'm happy to have experienced it, even if it was only one fully-completed run. Every other attempt, even if futile, was still fun to play.")
+
+(kbi "The end."
+     "web/lmr-ending.jpg")
