@@ -49,4 +49,4 @@
    ))
      
 
-(render-to "public/about.html")
+(render-to "about.html")

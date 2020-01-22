@@ -18,6 +18,13 @@
          *keybase*
 
          articles-per-page
+
+         current-pagechunks
+
+         root-directory
+         build-directory
+         task-directory
+         templates-directory
          
          current-title
          current-date
@@ -66,6 +73,30 @@
 (define/contract articles-per-page
   (parameter/c number?)
   (make-parameter 10))
+
+
+(define/contract current-pagechunks
+  (parameter/c list?)
+  (make-parameter '()))
+
+
+;; Build parameters
+(define/contract root-directory
+  (parameter/c path?)
+  (make-parameter (path->complete-path "web")))
+
+(define/contract build-directory
+  (parameter/c path?)
+  (make-parameter (path->complete-path "public")))
+
+(define/contract task-directory
+  (parameter/c path?)
+  (make-parameter (path->complete-path "tasks")))
+
+(define/contract templates-directory
+  (parameter/c path?)
+  (make-parameter (path->complete-path "templates")))
+
 
 
 

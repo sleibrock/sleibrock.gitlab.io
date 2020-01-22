@@ -1,7 +1,7 @@
 # Website makefile
 
 BIN=racket
-MAIN=Builder.rkt
+MAIN=Builder2.rkt
 
 build:
 	$(BIN) $(MAIN) build

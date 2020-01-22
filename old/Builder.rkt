@@ -27,6 +27,7 @@
  ;; custom tooling (only-in not very necessary)
  "tools/html-shortcuts.rkt"
  "tools/parameters.rkt"
+ "tools/pagelib.rkt" ; experimental for now
  
  (only-in "tools/logging.rkt"
           vprint
@@ -139,6 +140,18 @@
   (for-each run-task
             (directory-list #:build? #t task-directory)))
 
+(define/contract (new-render-to fpath)
+  (-> string? any/c)
+  (xexpr->file ((current-template)) fname))
+ 
+
+
+(define/contract (load-page-chunks)
+  (-> any/c)
+  (define pagefiles (get-pagefiles "pages"))
+  (define pagechunks (files->pages pagefiles run-task))
+  (current-pagechunks pagechunks))
+
 
 ;; A function which just incorporates the entire build process
 ;; Is only used from the entry point section
@@ -149,6 +162,28 @@
       (current-basepath (path->string build-directory)))
   (copy-root-directory)
   (run-all-tasks)
+  (displayln (format "Site written to ~a~a"
+                     (if (production?) "" "file://")
+                     (path->string build-directory))))
+
+
+(define/contract (test-build)
+  (-> any/c)
+  (vprint "Test build")
+  (copy-root-directory)
+
+  ; test functions
+  (define pagefiles (get-pagefiles "pages"))
+  (define pagechunks (files->pages pagefiles run-task))
+  (current-pagechunks pagechunks)
+
+
+  (displayln "")
+  (displayln "** Attempting to use new method of building")
+  (render-pages render-to (build-path build-directory "pages"))
+  (displayln "** done")
+  (displayln "")
+
   (displayln (format "Site written to ~a~a"
                      (if (production?) "" "file://")
                      (path->string build-directory))))
@@ -168,6 +203,7 @@
    (cond ([string=? action "build"] {build-whole-site})
          ([string=? action "tasks"] {run-all-tasks})
          ([string=? action "clean"] {clean-build-directory})
+         ([string=? action "testbuild"] {test-build})
          ;([string=? action "watch"] {watch-for-changes})
          (else (displayln (format "error: invalid command '~a'" action))))))
 

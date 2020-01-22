@@ -1,37 +1,11 @@
 (load-template "page.rkt")
 
 
-; Collect 
-(define/contract page-files list?
-  (directory-list #:build? #t (path->complete-path "pages")))
-
-;; Create an easy-to-pass tuple
-(struct page (title desc date file))
-
-;; Gather page data
-(define/contract page-data
-  (listof page?)
-  (map
-   (λ (page-task-path)
-     (parameterize
-         ([current-title       ""]
-          [current-description ""]
-          [current-date        ""]
-          [current-keywords    ""]
-          [current-contents    '()]
-          [current-stylesheets '("../static/css/style.css")]
-          [current-scripts     '()]
-          [current-postscripts '()]
-          [current-filetarget  ""])
-       (run-task page-task-path)
-       (render-to
-        (path->string
-         (build-path build-directory "pages" (current-filetarget))))
-       (page (current-title)
-             (current-description)
-             (current-date)
-             (current-filetarget))))
-   page-files))
+(for-each
+ (λ (chunk)
+   (page->file chunk xexpr->file
+               (build-path (build-directory) "pages")))
+ (current-pagechunks))
 
 
 ; Do this afterwards
@@ -48,12 +22,11 @@
            (p ,(link-to (page-title page-chunk)
                         (path->string
                          (build-path "pages"
-                                     (page-file page-chunk))))
+                                     (page-filedst page-chunk))))
               (br)
               ,(page-desc page-chunk)
               (br)
-              (sub "Posted ",(page-date page-chunk)))))
-              
-   (sort page-data string>? #:key page-date))))
+              (sub "Posted " ,(page-datestr page-chunk)))))
+   (current-pagechunks))))
 
-(render-to "public/pages.html")
+(render-to "pages.html")

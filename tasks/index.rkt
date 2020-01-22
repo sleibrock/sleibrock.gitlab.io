@@ -23,4 +23,4 @@
    ,(unordered-list (list (link-to "GitHub" "https://github.com/sleibrock")
                           (link-to "GitLab" "https://gitlab.com/sleibrock")))))
 
-(render-to "public/index.html") 
+(render-to "index.html")
