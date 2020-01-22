@@ -34,6 +34,9 @@
  (only-in "tools/contracts.rkt"
           file-path?
           )
+ (only-in "tools/system.rkt"
+          get-git-version-pair
+          )
  )
 
 (provide root-directory)

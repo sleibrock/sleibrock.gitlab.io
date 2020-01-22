@@ -26,6 +26,14 @@
                  ,(cons 'section (current-contents))))
            
            (div ([id "footer"])
-                (p ,(*fullname*)
-                   " 2019 >>= "
-                   ,(root-link "home" "index.html")))))))) 
+                (span ([id "footleft"])
+                 ,(*fullname*)
+                 " 2019 >>= "
+                 ,(root-link "home" "index.html"))
+                (span ([id "footright"])
+                      "version "
+                      ,(let ([p (get-git-version-pair)])
+                         (link-to (car p)
+                                  (string-append
+                                   "https://github.com/sleibrock/sleibrock.gitlab.io/commit/"
+                                   (cdr p)))))))))))

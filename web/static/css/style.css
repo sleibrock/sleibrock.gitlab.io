@@ -38,6 +38,14 @@ a:hover {
     font-size: 15px;
 }
 
+#footleft {
+    float: left;
+}
+
+#footright {
+    float: right;
+}
+
 #navbar {
     color: rgb(209, 179, 138);
     border-bottom-style: solid;
