@@ -15,6 +15,9 @@
           listof
           define/contract
           )
+ (only-in racket/list
+          last
+          )
  (only-in racket/cmdline
           command-line
           )

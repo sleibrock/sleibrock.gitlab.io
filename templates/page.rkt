@@ -31,7 +31,8 @@
                  " 2019 >>= "
                  ,(root-link "home" "index.html"))
                 (span ([id "footright"])
-                      "version "
+                      ,(root-link "rss" "rss.xml")
+                      " | version "
                       ,(let ([git-sha (current-git-sha)])
                          (link-to (substring git-sha 0 7)
                                   (string-append

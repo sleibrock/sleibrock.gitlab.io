@@ -7,6 +7,12 @@
           xexpr->xml
           write-xml/content
           )
+ (only-in racket/list
+          last
+          )
+ (only-in racket/string
+          string-split
+          )
  (only-in racket/contract
           ->
           any/c
@@ -61,7 +67,8 @@
     #:exists 'replace
     (λ (output-port)
       (parameterize ([current-output-port output-port])
-        (display "<!doctype html>")
+        (when (string=? "html" (last (string-split fname ".")))
+          (display "<!doctype html>"))
         (write-xml/content (xexpr->xml xexpr-t)))))
   (vprint (format "Wrote file to '~a'" (path->string fpath))))
 

@@ -20,7 +20,6 @@
 (provide (struct-out page)
          get-pagefiles
          files->pages
-         render-pages
          page->file
          )
 
@@ -60,23 +59,5 @@
   (writerf (page-contents chunk)
            (path->string
             (build-path base-path (page-filedst chunk)))))
-  
-
-
-
-(define (render-pages renderf base-path)
-  (map
-   (λ (chunk)
-     (parameterize
-         ([current-title       (page-title chunk)]
-          [current-description (page-desc chunk)]
-          [current-date        (page-datestr chunk)]
-          [current-contents    (page-contents chunk)]
-          [current-filetarget  (page-filedst chunk)])
-     (renderf (path->string
-               (build-path base-path (current-filetarget))))))
-   (current-pagechunks)))
-
-
 
 ; end
