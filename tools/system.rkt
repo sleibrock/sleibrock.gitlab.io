@@ -6,16 +6,13 @@
 
 
 (provide get-git-version
-         get-git-version-pair
          )
 
 
+;; This function can only be used locally
+;; When CI builds, it does not copy the .git folder
+;; so this is for local builds only, not CI-related
 (define (get-git-version)
   (file->string (build-path ".git" "refs" "heads" "master")))
-
-(define (get-git-version-pair)
-  (let ([v (get-git-version)])
-    `(,(substring v 0 7) . ,v)))
-
 
 ; end

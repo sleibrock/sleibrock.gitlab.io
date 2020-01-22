@@ -16,7 +16,7 @@ pages:
   stage: deploy
   script:
   - echo "Nothing here!"
-  - make prod 
+  - racket Builder2.rkt --prod --sha $CI_COMMIT_SHA build 
   artifacts:
     paths:
     - public

@@ -35,7 +35,7 @@
           file-path?
           )
  (only-in "tools/system.rkt"
-          get-git-version-pair
+          get-git-version
           )
  )
 
@@ -120,7 +120,13 @@
                                 (displayln "** PRODUCTION MODE **")
                                 (production? #t)
                                 (current-basepath (*sitepath*))]
+   #:multi [("-s" "--sha") gv
+                           "Set the Git commit version we're on"
+                           (displayln (format "Git version: ~a" gv))
+                           (current-git-sha gv)]
    #:args (action)
+   (when (string=? "" (current-git-sha))
+     (current-git-sha (get-git-version)))
    (cond ([string=? action "build"] {build-website})
          ([string=? action "clean"] {clean-build-directory})
          (else (displayln (format "error: invalid command ~e" action))))))

@@ -37,6 +37,7 @@
          current-template
          current-filetarget
          current-basepath
+         current-git-sha
 
          current-verbosity
          current-task
@@ -78,6 +79,12 @@
 (define/contract current-pagechunks
   (parameter/c list?)
   (make-parameter '()))
+
+
+;; Current Git SHA for the ref we're building on
+(define/contract current-git-sha
+  (parameter/c string?)
+  (make-parameter ""))
 
 
 ;; Build parameters

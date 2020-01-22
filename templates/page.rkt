@@ -32,8 +32,7 @@
                  ,(root-link "home" "index.html"))
                 (span ([id "footright"])
                       "version "
-                      ,(let ([p (get-git-version-pair)])
-                         (link-to (car p)
+                      ,(let ([git-sha (current-git-sha)])
+                         (link-to (substring git-sha 0 7)
                                   (string-append
-                                   "https://github.com/sleibrock/sleibrock.gitlab.io/commit/"
-                                   (cdr p)))))))))))
+                                   "https://github.com/sleibrock/sleibrock.gitlab.io/commit/" git-sha))))))))))
