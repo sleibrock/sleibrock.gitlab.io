@@ -25,6 +25,7 @@
          ordered-list
          table-of-contents
          keybase-img
+	 img-quot
 
          gist
 
@@ -39,6 +40,7 @@
          ol
 
          kbi
+	 img
          )
 
 (define/contract (link-to str url)
@@ -94,6 +96,19 @@
                    [alt   ,quotstr])))
           (p ([class "img-desc"]) ,quotstr))))
 
+(define/contract (img-quot quotstr fpath)
+  (-> string? string? xexpr?)
+  (let
+    ([imgurl (path->string (build-path 
+                              (current-basepath)
+			      "static" "img"
+			      fpath))])
+    `(div ([class "img-div"])
+          (a ([href ,imgurl])
+	    (img ([src ,imgurl]
+	          [alt ,quotstr])))
+          (p ([class "img-desc"]) ,quotstr))))
+
 
 ;; Writing mode assisted functions
 (define/contract (push-to-contents anything)
@@ -122,6 +137,9 @@
 
 (define (kbi str imgurl)
   (push-to-contents (list (keybase-img str imgurl))))
+
+(define (img str imgurl)
+  (push-to-contents (list (img-quot str imgurl))))
 
 
 ; end
