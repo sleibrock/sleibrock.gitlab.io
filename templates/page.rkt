@@ -28,7 +28,9 @@
            (div ([id "footer"])
                 (span ([id "footleft"])
                  ,(*fullname*)
-                 " 2019 >>= "
+                 " "
+                 ,(format "~a" (date-year (seconds->date (current-seconds))))
+                 " >>= "
                  ,(root-link "home" "index.html"))
                 (span ([id "footright"])
                       ,(root-link "rss" "rss.xml")
