@@ -8,21 +8,9 @@
 
 (current-contents
  `((p "Welcome to the personal homepage of Steven Leibrock")
-   (p "This website itself is still heavily under development as I'm writing my own website publishing system in "
+   (p "This website is written entirely within "
       ,(link-to "Racket" "https://racket-lang.org/")
-      " so it takes time to create new features.")
-
-
-   (h3 "Latest post")
-   ,(let ([last-post (car (current-pagechunks))])
-      `(p ,(link-to (page-title last-post)
-                    (path->string (build-path "pages"
-                                              (page-filedst last-post))))
-          (br)
-          ,(page-desc last-post)
-          (br)
-          ))
-
+      ", as well as some bits of JavaScript. It is compiled within GitLab's Continuous Integration system using Racket and compiled into static HTML. Any apps and demos I write are hosted here as well.")
    (hr)
    (h2 "Code")
    (p "I upload all my code to two webistes:")

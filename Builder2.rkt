@@ -78,7 +78,7 @@
   (xexpr->file ((current-template))
                (path->string (build-path (build-directory) fname))))
 
-
+; deprecated, no pages are being written using this sytem
 (define/contract (load-pagechunks)
   (-> any/c)
   (define pagefiles (get-pagefiles "pages"))
@@ -100,10 +100,8 @@
     (current-basepath (path->string (build-directory))))
   (define actions (list clean-build-directory
                         copy-root-directory
-                        load-pagechunks
                         run-all-tasks
                         ))
-
   (vprint "Running all actions")
   (for-each
    (λ (action)
