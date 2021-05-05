@@ -24,7 +24,6 @@
 
  "tools/html-shortcuts.rkt"
  "tools/parameters.rkt"
- "tools/pagelib.rkt"
 
  (only-in "tools/fileio.rkt"
           xexpr->file
@@ -77,15 +76,6 @@
   (-> string? any/c)
   (xexpr->file ((current-template))
                (path->string (build-path (build-directory) fname))))
-
-; deprecated, no pages are being written using this sytem
-(define/contract (load-pagechunks)
-  (-> any/c)
-  (define pagefiles (get-pagefiles "pages"))
-  (for-each displayln pagefiles)
-  (define pagechunks (files->pages pagefiles run-task))
-  (current-pagechunks
-   (sort pagechunks string>? #:key page-datestr)))
 
 
 (define/contract (run-all-tasks)

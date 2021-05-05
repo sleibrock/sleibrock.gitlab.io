@@ -13,6 +13,6 @@
 ;; When CI builds, it does not copy the .git folder
 ;; so this is for local builds only, not CI-related
 (define (get-git-version)
-  (file->string (build-path ".git" "refs" "heads" "master")))
+  (file->string (build-path ".git" "refs" "heads" "main")))
 
 ; end

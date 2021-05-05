@@ -7,7 +7,7 @@
 (current-stylesheets '("static/css/style.css"))
 
 (current-contents
- `((p "Hi there, my name is Steven Leibrock, and I a hobbyist computer nerd and tech enthusiast. I advocate for free open-source software, I enjoy writing in functional programming languages, and I like retro gaming in my spare time. Also I prefer Emacs over Vim, but still use Vim occasionally.")
+ `((p "Hi there, my name is Steven Leibrock, and I am a hobbyist computer nerd and tech enthusiast. I advocate for free open-source software, I enjoy writing in functional programming languages, and I like retro gaming in my spare time. Also I prefer Emacs over Vim, but still use Vim occasionally.")
 
    (p "")
 
