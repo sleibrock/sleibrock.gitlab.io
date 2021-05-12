@@ -17,13 +17,15 @@
 
 (current-contents
  `((p "This is the color game")
-   (canvas ([id "color_game"])
-           (p "This browser does not support Canvas/HTML5"))
+   (div ([id "game_container"] [width "100%"])
+        (canvas ([id "color_game"])
+                (p "This browser does not support Canvas/HTML5")))
    (div ([style "margin:0 auto;"])
         (input ([type "button"] [value "Reset"]
                 [onclick "shuffle_map()"]))
         ,@(map (λ (p)
                  `(input ([type "button"]
+                          [style ,(format "padding:5px;background-color: ~a" (cdr p))]
                           [onclick ,(format "on_click(~a)" (car p))]
                           [value ,(format "~a" (cdr p))])))
                color-mapping))))

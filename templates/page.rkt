@@ -9,7 +9,8 @@
            (meta ([keywords    ,(current-keywords)]))
            (meta ([description ,(current-description)]))
            (meta ([charset     "UTF-8"]))
-           (meta ([viewport    "width=device-width, initial-scale=1.0"]))
+           (meta ([name "viewport"]
+                 [viewport    "width=device-width, initial-scale=1.0"]))
            (link ([rel "apple-touch-icon"]
                   [sizes "180x180"]
                   [href "/apple-touch-icon.png"]))

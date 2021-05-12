@@ -4,6 +4,7 @@ if (!STOVELIB) {
     throw "Stove's library not found";
 }
 
+//var container_div = $("game_container");
 var canvas = $("color_game");
 var ctx = canvas.getContext('2d');
 
@@ -37,6 +38,24 @@ var WORLD = {
     painting: false,
 };
 
+var on_resize = function() {
+    var new_width = window.innerWidth;
+    console.log("New width: " + new_width);
+    if (new_width > 700)
+	new_width = 700;
+    WORLD.W = new_width;
+    WORLD.H = new_width;
+    WORLD.square.width = new_width / WORLD.map_width;
+    WORLD.square.height = new_width / WORLD.map_height;
+    canvas.width = WORLD.W;
+    canvas.height = WORLD.H;
+};
+on_resize();
+window.onresize = on_resize;
+
+
+
+
 var to_color = function(num) {
     switch (num) {
     case 0: return "black"; break;
@@ -56,7 +75,6 @@ var set_difficulty = function(diff) {
 var iter_over_map = function(proc) {
     for (var y=0; y < WORLD.map.length; y++) {
 	for (var x = 0; x < WORLD.map[y].length; x++) {
-	    console.log("applying iteration " + x + "," + y);
 	    proc(x, y);
 	}
     }
