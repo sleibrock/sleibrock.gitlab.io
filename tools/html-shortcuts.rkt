@@ -20,11 +20,13 @@
 (provide link-to
          anchor
          css
+         js
+         js/async
+         js/defer
          root-link
          unordered-list
          ordered-list
          table-of-contents
-         keybase-img
 	 img-quot
 
          gist
@@ -39,7 +41,6 @@
          ul
          ol
 
-         kbi
 	 img
          )
 
@@ -65,6 +66,23 @@
   (-> string? xexpr?)
   `(link ([rel "stylesheet"] [href ,fpath])))
 
+(define/contract (js fpath)
+  (-> string? xexpr?)
+  `(script ([type "text/javascript"]
+            [src ,fpath])))
+
+(define/contract (js/async fpath)
+  (-> string? xexpr?)
+  `(script ([type "text/javascript"]
+            [src ,fpath]
+            [async ""])))
+
+(define/contract (js/defer fpath)
+  (-> string? xexpr?)
+  `(script ([type "text/javascript"]
+            [src ,fpath]
+            [defer ""])))
+
 
 (define/contract (list-wrap type)
   (-> symbol? (-> list? xexpr?))
@@ -86,15 +104,6 @@
   (-> string? xexpr?)
   `(script ([src ,(string-append "https://gist.github.com/" url ".js")]) ""))
 
-
-(define/contract (keybase-img quotstr imgurl)
-  (-> string? string? xexpr?)
-  (let ([kburl (string-append (*keybase*) imgurl)])
-    `(div ([class "kbimg-div"])
-          (a ([href ,kburl])
-             (img ([src  ,kburl]
-                   [alt   ,quotstr])))
-          (p ([class "img-desc"]) ,quotstr))))
 
 (define/contract (img-quot quotstr fpath)
   (-> string? string? xexpr?)
@@ -134,9 +143,6 @@
 
 (define (ol lst)
   (push-to-contents (list (ordered-list lst))))
-
-(define (kbi str imgurl)
-  (push-to-contents (list (keybase-img str imgurl))))
 
 (define (img str imgurl)
   (push-to-contents (list (img-quot str imgurl))))

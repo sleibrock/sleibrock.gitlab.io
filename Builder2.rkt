@@ -6,6 +6,7 @@
           xexpr->xml
           write-xml/content
           validate-xexpr
+          permissive-xexprs
           )
  (only-in racket/contract
           ->
@@ -16,6 +17,7 @@
           define/contract
           )
  (only-in racket/list
+          range
           last
           )
  (only-in racket/cmdline
@@ -52,6 +54,7 @@
 
 
 (current-verbosity #t)
+(permissive-xexprs #t)
 
 (define-namespace-anchor a)
 
