@@ -39,7 +39,7 @@ var WORLD = {
     map_width: 10,
     map_height: 10,
 
-    difficulty: 6,
+    difficulty: 5,
     turn_count: 0,
     game_over: false,
     painting: false,
@@ -93,6 +93,25 @@ var on_levelselect = function(){
 };
 levelpick.onchange = on_levelselect; // bind the event
 
+var on_difficulty_set = function() {
+    var v = diffpick.value;
+    WORLD.difficulty = v;
+    show_buttons();
+    shuffle_current_map();
+};
+diffpick.onchange = on_difficulty_set;
+
+
+var show_buttons = function() {
+    for(var n=1; n < 10; n++) {
+	var butt = $("button"+n);
+	if (n <= WORLD.difficulty) {
+	    butt.style.display = "inline";
+	} else {
+	    butt.style.display = "none";
+	}
+    }
+};
 
 var to_color = function(num) {
     switch (num) {
@@ -103,13 +122,13 @@ var to_color = function(num) {
     case 4: return "purple"; break;
     case 5: return "cyan"; break;
     case 6: return "yellow"; break;
-    case 7: return "white"; break;
+    case 7: return "brown"; break;
+    case 8: return "grey"; break;
+    case 9: return "white"; break;
     default: return "black"; break;
     }
 }
 
-var set_difficulty = function(diff) {
-};
 
 // equivalent to a mapcar over the entire map
 var iter_over_map = function(proc) {
@@ -141,8 +160,6 @@ var gen_random_map = function() {
 	return;
     }
     WORLD.painting = true;
-    WORLD.turn_count = 0;
-    score.innerHTML = "Turns: 0";
     iter_over_map(function(x,y) {
 	WORLD.map[y][x] = randp(1,WORLD.difficulty);
     });
@@ -154,6 +171,8 @@ var shuffle_current_map = function() {
     if (WORLD.painting) {
 	return;
     }
+    WORLD.turn_count = 0;
+    score.innerHTML = "Turns: 0";
     if (WORLD.map_id == 777) {
 	return gen_random_map();
     }
@@ -210,6 +229,7 @@ var paint_traverse = function(x, y, old_color, new_color){
     return;
 };
 
+
 var init = function() {
     canvas.width = WORLD.W;
     canvas.height = WORLD.H;
@@ -217,7 +237,8 @@ var init = function() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, WORLD.W, WORLD.H);
 
-    gen_random_map();
+    on_difficulty_set();
+    //gen_random_map();
 
     window.requestAnimationFrame(loop);
 };

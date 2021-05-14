@@ -14,7 +14,10 @@
     (3 . "blue")
     (4 . "purple")
     (5 . "cyan")
-    (6 . "yellow")))
+    (6 . "yellow")
+    (7 . "brown")
+    (8 . "grey")
+    (9 . "white")))
 
 (define difficulties
   '((5 . "I'm too young to die")
@@ -115,6 +118,7 @@
     ,@(map (λ (p)
              `(input
                ([type "button"]
+                [id ,(format "button~a" (car p))]
                 [style ,(format "padding:5px;margin:2px;background-color: ~a;font-size: 2.0em;" (cdr p))]
                 [onclick ,(format "on_click(~a)" (car p))]
                 [value ,(format "~a" (cdr p))])))
