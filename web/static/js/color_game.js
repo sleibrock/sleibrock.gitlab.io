@@ -48,8 +48,7 @@ var WORLD = {
 var on_resize = function() {
     var new_width = window.innerWidth;
     console.log("New width: " + new_width);
-    if (new_width > 700)
-	new_width = 700;
+    if (new_width > 800) new_width = 800;
     WORLD.W = new_width;
     WORLD.H = new_width;
     WORLD.square.width = new_width / WORLD.map_width;

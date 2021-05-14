@@ -2,8 +2,8 @@
 body {
     background-color: rgb(18,18,18);
     margin: 10px auto;
-    max-width: 700px;
-    width: 700px;
+    max-width: 800px;
+    width: 800px;
     line-height: 1.6;
     font-size: 16px;
     color: rgb(191,191,191);
@@ -12,11 +12,11 @@ body {
 }
 
 /* this works on my browser on my desktop, but.... */
-@media screen and (max-device-width: 600px) {
+@media screen and (max-device-width: 800px) {
     body {
 	margin: 2px auto;
-	width: 100%;
-	max-width: 100%;
+	/*width: 100%;
+	max-width: 100%;*/
 	font-size: 25px;
 	padding: 2px;
     }
