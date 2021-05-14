@@ -11,6 +11,7 @@ body {
     font-family: "Open Sans", sans-serif;
 }
 
+/* this works on my browser on my desktop, but.... */
 @media screen and (max-device-width: 600px) {
     body {
 	margin: 2px auto;
@@ -20,6 +21,21 @@ body {
 	padding: 2px;
     }
 
+    input {
+	font-size: 1.1em;
+    }
+}
+
+/* which media query works on mobile, exactly? */
+@media screen and (max-width: 600px) {
+    body {
+	margin: 2px auto;
+	width: 100%;
+	max-width: 100%;
+	font-size: 25px;
+	padding: 2px;
+    }
+    
     input {
 	font-size: 1.1em;
     }

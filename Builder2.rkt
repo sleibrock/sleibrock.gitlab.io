@@ -20,6 +20,11 @@
           range
           last
           )
+ (only-in racket/string
+          string-join
+          string-trim
+          string-split
+          )
  (only-in racket/cmdline
           command-line
           )
