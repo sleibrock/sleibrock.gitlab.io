@@ -30,8 +30,8 @@ body {
 @media screen and (max-width: 600px) {
     body {
 	margin: 2px auto;
-	width: 100%;
-	max-width: 100%;
+	/*width: 100%;
+	max-width: 100%;*/
 	font-size: 25px;
 	padding: 2px;
     }

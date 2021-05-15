@@ -56,7 +56,6 @@ var on_resize = function() {
     canvas.width = WORLD.W;
     canvas.height = WORLD.H;
 };
-on_resize(); // init at load time
 window.onresize = on_resize; // then bind to window
 
 
@@ -237,9 +236,10 @@ var init = function() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, WORLD.W, WORLD.H);
 
-    on_difficulty_set();
-    //gen_random_map();
+    on_resize(); // set the proper sizing
+    on_difficulty_set(); // set diff and refresh game
 
+    // begin the animation loop
     window.requestAnimationFrame(loop);
 };
 
@@ -250,7 +250,7 @@ var paint_square = function(x, y) {
 	y * WORLD.square.height,
 	WORLD.square.width,
 	WORLD.square.height
-    )
+    );
 }
 
 
